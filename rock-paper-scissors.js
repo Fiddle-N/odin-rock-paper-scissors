@@ -84,31 +84,14 @@ function createGameSummary(result, playerScore, computerScore) {
 }
 
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
+function playRoundWithPlayerSelection(e) {
+    const playerSelection = e.target.dataset.playerSelection;
+    const computerSelection = getComputerChoice();
 
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt('Choose Rock, Paper or Scissors:').toLowerCase();
-        let computerSelection = getComputerChoice();
+    const result = playRound(playerSelection, computerSelection);
 
-        let result = playRound(playerSelection, computerSelection);
-
-        switch (result) {
-            case LOSE:
-                computerScore++;
-                break;
-            case WIN:
-                playerScore++;
-                break;
-        }
-
-        console.log(createRoundSummary(result, playerSelection, computerSelection));
-    }
-
-    let gameResult = calculateGameResult(playerScore, computerScore);
-    console.log(createGameSummary(gameResult, playerScore, computerScore));
+    console.log(createRoundSummary(result, playerSelection, computerSelection));
 }
 
-
-game();
+const playerSelectBtns = Array.from(document.querySelectorAll('.player-selection'));
+playerSelectBtns.forEach(btn => btn.addEventListener('click', playRoundWithPlayerSelection));
