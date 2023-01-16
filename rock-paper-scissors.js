@@ -12,11 +12,11 @@ function getComputerChoice() {
     let randomInt = Math.floor(Math.random() * 3);
     switch (randomInt) {
         case 0:
-            return 'Rock';
+            return 'rock';
         case 1:
-            return 'Paper';
+            return 'paper';
         case 2:
-            return 'Scissors';
+            return 'scissors';
     }
 }
 
@@ -26,9 +26,9 @@ function playRound(playerSelection, computerSelection) {
         return DRAW;
     }
     else if (
-           (playerSelection === 'Rock' && computerSelection === 'Paper')
-        || (playerSelection === 'Paper' && computerSelection === 'Scissors')
-        || (playerSelection === 'Scissors' && computerSelection === 'Rock')
+           (playerSelection === 'rock' && computerSelection === 'paper')
+        || (playerSelection === 'paper' && computerSelection === 'scissors')
+        || (playerSelection === 'scissors' && computerSelection === 'rock')
     ){
         return LOSE;
     }
@@ -39,13 +39,16 @@ function playRound(playerSelection, computerSelection) {
 
 
 function createRoundSummary(result, playerSelection, computerSelection) {
+    const playerSelectionTxt = capitalise(playerSelection);
+    const computerSelectionTxt = capitalise(computerSelection);
+
     switch (result) {
         case LOSE:
-            return `You Lose. ${computerSelection} beats ${playerSelection}.`;
+            return `You Lose. ${computerSelectionTxt} beats ${playerSelectionTxt}.`;
         case DRAW:
-            return `It's a draw. Both you and the computer chose ${playerSelection}.`;
+            return `It's a draw. Both you and the computer chose ${playerSelectionTxt}.`;
         case WIN:
-            return `You Win! ${playerSelection} beats ${computerSelection}.`;
+            return `You Win! ${playerSelectionTxt} beats ${computerSelectionTxt}.`;
     }
 
 }
@@ -86,7 +89,7 @@ function game() {
     let computerScore = 0;
 
     for (let i = 0; i < 5; i++) {
-        let playerSelection = capitalise(prompt('Choose Rock, Paper or Scissors:'));
+        let playerSelection = prompt('Choose Rock, Paper or Scissors:').toLowerCase();
         let computerSelection = getComputerChoice();
 
         let result = playRound(playerSelection, computerSelection);
