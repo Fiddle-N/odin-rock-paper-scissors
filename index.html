@@ -4,12 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+    </style>
     <script type="text/javascript" src="rock-paper-scissors.js" defer></script>
     <title>Rock Paper Scissors</title>
 </head>
 <body>
-    <button type="button" class="player-selection" data-player-selection="rock">Rock</button>
-    <button type="button" class="player-selection" data-player-selection="paper">Paper</button>
-    <button type="button" class="player-selection" data-player-selection="scissors">Scissors</button>
+    <h1>Play Rock, Paper or Scissors! First to 5 rounds wins!</h1>
+    <div>
+        <button type="button" class="player-selection" data-player-selection="rock">Rock</button>
+        <button type="button" class="player-selection" data-player-selection="paper">Paper</button>
+        <button type="button" class="player-selection" data-player-selection="scissors">Scissors</button>
+    </div>
+    <div>
+        <div><span>Your score: </span><span id="player-choice"></span></div>
+        <div><span>Computer score: </span><span id="computer-choice"></span></div>
+        <div><span>Result: </span><span id="round-result"></span></div>
+    </div>
+    <div>
+        <div id="player-score-summary"><span>Your score: </span><span class="score" id="player-score"></span></div>
+        <div id="computer-score-summary"><span>Computer score: </span><span class="score" id="computer-score"></span></div>
+    </div>
+    <div>
+        <div id="game-result"></div>
+    </div>
 </body>
 </html>

@@ -2,6 +2,8 @@ const LOSE = -1
 const DRAW = 0
 const WIN = 1
 
+const INIT_SCORE = 0;
+
 
 function capitalise(str) {
     return str[0].toUpperCase() + str.slice(1);
@@ -54,20 +56,6 @@ function createRoundSummary(result, playerSelection, computerSelection) {
 }
 
 
-function calculateGameResult(playerScore, computerScore) {
-    if (playerScore < computerScore) {
-        return LOSE;
-    }
-    else if (playerScore > computerScore) {
-        return WIN;
-    }
-    else {
-        return DRAW;
-    }
-
-}
-
-
 function createGameSummary(result, playerScore, computerScore) {
     let playerRoundStr = (playerScore === 1) ? 'round' : 'rounds';
     let computerRoundStr = (computerScore === 1) ? 'round' : 'rounds';
@@ -75,8 +63,6 @@ function createGameSummary(result, playerScore, computerScore) {
     switch (result) {
         case LOSE:
             return `You Lose. You won ${playerScore} ${playerRoundStr} but the computer beat you with ${computerScore} ${computerRoundStr}.`;
-        case DRAW:
-            return `It's a draw. Both you and the computer won ${playerScore} ${playerRoundStr}.`;
         case WIN:
             return `You Win! The computer won ${computerScore} ${computerRoundStr} but you beat it with ${playerScore} ${playerRoundStr}!`;
     }
@@ -84,14 +70,71 @@ function createGameSummary(result, playerScore, computerScore) {
 }
 
 
-function playRoundWithPlayerSelection(e) {
-    const playerSelection = e.target.dataset.playerSelection;
-    const computerSelection = getComputerChoice();
-
-    const result = playRound(playerSelection, computerSelection);
-
-    console.log(createRoundSummary(result, playerSelection, computerSelection));
+function getPlayerSelections() {
+    return Array.from(document.querySelectorAll('.player-selection'))
 }
 
-const playerSelectBtns = Array.from(document.querySelectorAll('.player-selection'));
-playerSelectBtns.forEach(btn => btn.addEventListener('click', playRoundWithPlayerSelection));
+
+function playRounds() {
+    let playerScore = INIT_SCORE;
+    let computerScore = INIT_SCORE;
+
+    function playRoundWithPlayerSelection(e) {
+        const playerSelection = e.target.dataset.playerSelection;
+        const computerSelection = getComputerChoice();
+
+        const result = playRound(playerSelection, computerSelection);
+        const resultSummary = createRoundSummary(result, playerSelection, computerSelection);
+
+        const playerChoice = document.querySelector('#player-choice');
+        playerChoice.textContent = capitalise(playerSelection);
+
+        const computerChoice = document.querySelector('#computer-choice');
+        computerChoice.textContent = capitalise(computerSelection);
+
+        const roundResult = document.querySelector('#round-result');
+        roundResult.textContent = resultSummary;
+
+        if (result === WIN) {
+            playerScore++;
+            const playerResult = document.querySelector('#player-score');
+            playerResult.textContent = playerScore;
+        }
+        if (result === LOSE) {
+            computerScore++;
+            const computerResult = document.querySelector('#computer-score');
+            computerResult.textContent = computerScore;
+        }
+
+        if (playerScore === 5 || computerScore === 5) {
+            const playerSelections = getPlayerSelections();
+            playerSelections.forEach(playerSelection => playerSelection.disabled = true);
+
+            const gameResult = document.querySelector('#game-result');
+
+            const gameSummary = (playerScore == 5) 
+                ? createGameSummary(WIN, playerScore, computerScore) 
+                : createGameSummary(LOSE, playerScore, computerScore);
+
+            gameResult.textContent = gameSummary;
+        }
+    }
+
+    return playRoundWithPlayerSelection;
+
+}
+
+
+function main() {
+    const scores = Array.from(document.querySelectorAll('.score'));
+    scores.forEach(score => (score.textContent = INIT_SCORE));
+
+    playRoundFn = playRounds();
+    const playerSelections = getPlayerSelections();
+    playerSelections.forEach(playerSelection => playerSelection.addEventListener('click', playRoundFn));
+
+    
+}
+
+
+main();
